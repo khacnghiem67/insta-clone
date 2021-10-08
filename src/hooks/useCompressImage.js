@@ -1,23 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import { store } from './app/store';
-import './index.css';
-import * as serviceWorker from './serviceWorker';
-import { db, auth } from './firebase';
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
 
 const MAX_WIDTH = 320;
 const MAX_HEIGHT = 180;
@@ -43,11 +24,10 @@ function calculateSize(img, maxWidth, maxHeight) {
   return [width, height];
 }
 
-export const compressImage = (file, setFileValue) => {
+export const useCompressImage = (file, setFileValue) => {
   const blobURL = URL.createObjectURL(file);
   const img = new Image();
   img.src = blobURL;
-
   img.onerror = function () {
     URL.revokeObjectURL(this.src);
     // Handle the failure properly
@@ -64,12 +44,9 @@ export const compressImage = (file, setFileValue) => {
 
     const newDataUrl = canvas.toDataURL(MIME_TYPE, QUALITY);
 
-    // console.log(newDataUrl);
+    console.log(newDataUrl);
     setFileValue(newDataUrl);
   };
 };
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+export default useCompressImage;
